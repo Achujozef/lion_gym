@@ -1,0 +1,90 @@
+{% comment %} <!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>Webcam Photo Capture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='https://unpkg.com/webcam-easy@1.1.1/dist/webcam-easy.min.js'></script>
+</head>
+<body>
+    <h1>Webcam Photo Capture</h1>
+    <video id='webCam' autoplay playsinlne width="800" height='600'></video>
+    <canvas id='canvas'></canvas>
+    <a download>SNAP</a>
+
+    <script>
+        const webCamElement = document.getElementById('webCam');
+        const canvasElement = document.getElementById('canvas');
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+            const webcam = new Webcam(webCamElement, 'user', canvasElement);
+            webcam.start();
+        } else {
+            console.error('getUserMedia is not supported in this browser.');
+        }
+    </script>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Photo Capture</title>
+</head>
+<body>
+    <h1>Live Photo Capture</h1>
+
+    <div class="row">
+        <label for="preferred-time">Photo:</label>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+            <input type="file" class="form-control" name='photo' id="photo-input">
+        </div>
+    </div>
+
+    <!-- Add a button to start the live camera capture -->
+    <button id="capture-button">Capture Photo</button>
+
+    <div id="camera-container" style="display: none;">
+        <video id="camera-stream" autoplay playsinline></video>
+        <button id="capture-photo">Capture</button>
+    </div>
+
+    <canvas id="photo-preview" style="display: none;"></canvas>
+
+    <script>
+        const photoInput = document.getElementById('photo-input');
+        const captureButton = document.getElementById('capture-button');
+        const cameraContainer = document.getElementById('camera-container');
+        const cameraStream = document.getElementById('camera-stream');
+        const capturePhotoButton = document.getElementById('capture-photo');
+        const photoPreview = document.getElementById('photo-preview');
+        const canvas = photoPreview.getContext('2d');
+
+        // Access the device camera stream
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraStream.srcObject = stream;
+                cameraContainer.style.display = 'block';
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+            }
+        }
+
+        // Capture a photo from the camera stream
+        capturePhotoButton.addEventListener('click', function() {
+            canvas.width = cameraStream.videoWidth;
+            canvas.height = cameraStream.videoHeight;
+            canvas.drawImage(cameraStream, 0, 0, canvas.width, canvas.height);
+            photoPreview.style.display = 'block';
+            cameraStream.srcObject.getVideoTracks().forEach(track => track.stop());
+            cameraContainer.style.display = 'none';
+            // Insert the captured image into the file input
+            const dataURL = photoPreview.toDataURL('image/jpeg');
+            photoInput.value = dataURL;
+        });
+
+        captureButton.addEventListener('click', startCamera);
+    </script>
+</body>
+</html>

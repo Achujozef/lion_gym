@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lion Gym| Bill details</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" type="text/css" >
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'gym_app:index' %}" class="nav-link">Home</a>
+      </li>
+      
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <div class="image">
+            {% if user.user.profile_pic %}
+            <img src="{{user.user.profile_pic.url}}" class="img-circle elevation-2" alt="User Image" width="35px" height="35px">
+            {% elif user.extendeduser.profile_pic %}
+            <img src="{{user.extendeduser.profile_pic.url}}" class="img-circle elevation-2" alt="User Image" width="35px" height="35px">
+            {% else %}
+            <img src="{% static 'img\user.png' %}" class="img-circle elevation-2" alt="User Image" width="35px" height="35px">
+            {% endif %}
+          </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <i class="fas mr-2 fa-regular fa-user"></i>  {{user.username}}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'gym_app:bussiness_admin_register' %}" class="dropdown-item">
+            <i class="fas mr-2 fa-regular fa-registered"></i>  Register New Bussiness Admin
+          </a>
+          <a href="{% url 'gym_app:logout' %}" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i>  Logout
+          </a>
+        
+             
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'gym_app:index' %}" class="brand-link">
+      <img src="{% static 'img/lion gym logo.webp' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Lion Gym</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      
+
+      <!-- SidebarSearch Form -->
+      
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+            
+               
+               <li class="nav-item ">
+                 <a href="{% url 'gym_app:index' %}" class="nav-link ">
+                   <i class="nav-icon fas fa-tachometer-alt"></i>
+                   <p>
+                     Dashboard
+                   </p>
+                 </a>
+               </li>
+               
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:enquiry' %}" class="nav-link ">
+                   <i class="nav-icon fa-solid fa-phone"></i>
+                   <p>
+                     Enquiry
+                   </p>
+                 </a>
+               </li>
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:enquiry_follow_up' %}" class="nav-link">
+                   <i class="nav-icon fa-solid fa-phone"></i>
+                   <p>
+                     Enquiry Followup
+                     <span class="badge badge-info right">{{enquiry_follow_up_count}}</span>
+                   </p>
+                 </a>
+               </li>
+               
+               
+               <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa-solid fa-users"></i>
+                  <p>
+                    Members
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'gym_app:list_members' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>All</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'gym_app:active_members' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Active Members</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'gym_app:inactive_members' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Inactive Members</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+               
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:list_trainers' %}" class="nav-link">
+                   <i class="nav-icon fa-sharp fa-solid fa-user-secret"></i>
+                   <p>
+                     Trainers
+                   </p>
+                 </a>
+               </li>
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:receptionist_register' %}" class="nav-link">
+                   <i class="nav-icon fa-sharp fa-solid fa-user-secret"></i>
+                   <p>
+                       Receptionist
+                   </p>
+                 </a>
+               </li>
+               <li class="nav-item">
+                <a href="{% url 'gym_app:otherstaff_register' %}" class="nav-link">
+                  <i class="nav-icon fa-solid fa-clipboard-user"></i>
+                  <p>
+                      Other Staffs
+                  </p>
+                </a>
+              </li>
+               
+               
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:equipments' %}" class="nav-link">
+                   <i class="nav-icon fa-solid fa-dumbbell"></i>
+                   <p>
+                     Equipments
+                   </p>
+                 </a>
+               </li>
+              
+               
+               <li class="nav-item">
+                 <a href="#" class="nav-link">
+                   <i class="nav-icon fa-solid fa-calendar-days"></i>
+                   <p>
+                     Attendance
+                     <i class="right fas fa-angle-left"></i>
+                   </p>
+                 </a>
+                 <ul class="nav nav-treeview">
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:attendance_trainer' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Trainers</p>
+                     </a>
+                   </li>
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:attendance_member' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Members</p>
+                     </a>
+                   </li>
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:all_attendance' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>All</p>
+                     </a>
+                   </li>
+                   
+                   
+                 </ul>
+               </li>
+               
+               <li class="nav-item">
+                 <a href="#" class="nav-link">
+                   <i class="nav-icon fas fa-money-check"></i>
+                   <p>
+                     Payment
+                     <i class="right fas fa-angle-left"></i>
+                   </p>
+                 </a>
+                 <ul class="nav nav-treeview">
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:pending_payment' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Pending Payment</p>
+                     </a>
+                   </li>
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:completed_payment' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Completed Payment</p>
+                     </a>
+                   </li>
+                 </ul>
+               </li>
+               
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:bill' %}" class="nav-link active">
+                   <i class="nav-icon fas fa-file-invoice"></i>
+                   <p>
+                     Bill
+                   </p>
+                 </a>
+               </li>
+               
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:salary_management' %}" class="nav-link">
+                   <i class="nav-icon fa-solid fa-money-bill-wave"></i>
+                   <p>
+                     Salary Management
+                   </p>
+                 </a>
+               </li>
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:membership_expiry' %}" class="nav-link">
+                   <i class="nav-icon fa-solid fa-money-bill-wave"></i>
+                   <p>
+                     Membership Expiry
+                     <span class="badge badge-info right">{{membership_expiry_count}}</span>
+                   </p>
+                 </a>
+               </li>
+               <li class="nav-item">
+                 <a href="{% url 'gym_app:todays_birthday' %}" class="nav-link">
+                   <i class="nav-icon fa-solid fa-cake-candles"></i>
+                   <p>
+                     Today's Birthday
+                     <span class="badge badge-info right">{{birthday_count}}</span>
+                   </p>
+                 </a>
+               </li>
+               
+                              <li class="nav-item">
+                 <a href="#" class="nav-link">
+                   <i class="nav-icon fa-solid fa-gear"></i>
+                   <p>
+                     Settings
+                     <i class="right fas fa-angle-left"></i>
+                   </p>
+                 </a>
+                 <ul class="nav nav-treeview">
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:Goal_add' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Add Goals</p>
+                     </a>
+                   </li>
+                 </ul>
+                 <ul class="nav nav-treeview">
+                   <li class="nav-item">
+                     <a href="{% url 'gym_app:membership_plan' %}" class="nav-link">
+                       <i class="far fa-circle nav-icon"></i>
+                       <p>Add Membership</p>
+                     </a>
+                   </li>
+                 </ul>
+               </li>
+
+               
+           </nav>
+
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Invoice</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Invoice</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <h5><i class="fas fa-info"></i> Note:</h5>
+              This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+            </div>
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  {% comment %} {% if not user.user.logo %}
+                  <h4>
+                    <i class="fas fa-globe"></i> {{user.user.gym_name}}
+                    <small class="float-right" id="current_date"></small>
+                  </h4>
+                  {% else %}
+                  <h4>
+                    <img style="width:55px;" src="{{user.user.logo.url}}"> {{user.user.gym_name}}
+                    <small class="float-right" id="current_date"></small>
+                  </h4>
+                  {% endif %} {% endcomment %}
+                  
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  From,
+                  
+                  <address>
+                    <strong>Lion Gym Sreekariyam</strong><br>
+                    Opposite Juma Masjid<br>
+                    Amadi Nagar, Sreekariyam <br>
+                    Thiruvananthapuram, Kerala 695017
+                  </address>
+                  
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  To
+                  <address>
+                    <strong>{{bill.full_name}}</strong><br>
+                    Address : {{bill.address}}<br>
+                    Phone : {{bill.phone}}<br>
+                    Email : {{bill.user.email}}<br>
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>Membership plan :</b> {{bill.membership_plan.name}}<br>
+                  {% if bill.membership_plan.session %}
+                  <b>Session :</b> {{bill.membership_plan.session}}<br>
+                  {% endif %}
+                  <br>
+                  
+                  Join date: {{bill.join_date}}<br>
+                  Expire date: {{bill.expiry_date}}
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Membership plan</th>
+                      <th>Duration</th>
+                      {% if bill.membership_plan.session %}
+                      <th>Session</th>
+                      {% endif %}
+                      <th>Join date</th>
+                      <th>Expire date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>{{bill.membership_plan.name}}</td>
+                      <td>{{bill.membership_plan.duration}} Months</td>
+                      {% if bill.membership_plan.session %}
+                      <td>{{bill.membership_plan.session}}</td>
+                      {% endif %}
+                      <td>{{bill.join_date}}</td>
+                      <td>{{bill.expiry_date}}</td>
+                    </tr>
+                    
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+        
+                </div>
+                <!-- /.col -->
+                <div class="col-6">
+                  {% comment %} <p class="lead">Amount Due 2/22/2014</p> {% endcomment %}
+          
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">Plan Amount:</th>
+                        <td>₹ {{bill.membership_plan.price}}</td>
+                      </tr>
+                      {% if bill.gst_amount %}
+                      <tr>
+                        <th style="width:50%">GST (18%):</th>
+                        <td>₹ {{bill.gst_amount}} </td>
+                      </tr>
+                      {% endif %}
+                      {% if not bill.discount == 0 %}
+                      <tr>
+                        <th style="width:50%">Discount:</th>
+                        <td>₹ {{bill.discount}}</td>
+                      </tr>
+                      {% endif %}
+                      
+                      <tr>
+                        <th style="width:50%">Grand Total:</th>
+                        <td>₹ {{bill.grand_total}}</td>
+                      </tr>
+                      <tr>
+                        <th style="width:50%">Total Paid Amount:</th>
+                        <td>₹ {{bill.total_paid_amount}}</td>
+                      </tr>
+                      <tr>
+                        <th>Pending:</th>
+                        <td>₹ {{bill.pending_amount}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+          
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-12">
+                  {% comment %} <a href="{% url 'gym_app:bill_generation_print' bill.id %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a> {% endcomment %}
+                  
+                  <a href="{% url 'gym_app:bill_generation_print' bill.id %}" type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                    <i class="fas fa-download"></i> Generate PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2023 <a href="https://a2zalphabetsolutionz.com/">A2Z ALPHABETSOLUTIONZ PVT.LTD</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.2.0
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+{% comment %} <script>
+  // JavaScript code to display current date in "dd/mm/yy" format
+  var currentDate = new Date();
+
+  var day = String(currentDate.getDate()).padStart(2, '0');
+  var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  var year = String(currentDate.getFullYear());
+
+  var formattedDate = day + '/' + month + '/' + year;
+
+  document.getElementById("current_date").innerHTML = formattedDate;
+</script> {% endcomment %}
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+</body>
+</html>
